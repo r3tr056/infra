@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-deployment
+  namespace: ml-golang
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ml
+  template:
+    metadata:
+      labels:
+        app: ml
+    spec:
+      containers:
+      - name: ml-container
+        image: <YOUR_ML_IMAGE>
+        resources:
+          limits:
+            nvidia.com/gpu: 1  # Adjust GPU resources as needed
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-api-deployment
+  namespace: ml-golang
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: golang-api
+  template:
+    metadata:
+      labels:
+        app: golang-api
+    spec:
+      containers:
+      - name: golang-api-container
+        image: <YOUR_GOLANG_API_IMAGE>
+        # Add other configurations for your Golang API container as needed
